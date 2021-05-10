@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {Subject} from 'rxjs';
+import {Router} from '@angular/router';
 
 const herokuUrl = 'https://damp-bayou-38809.herokuapp.com';
 
@@ -8,8 +10,10 @@ const herokuUrl = 'https://damp-bayou-38809.herokuapp.com';
 })
 export class UserService {
 
+  currentUser: string;  // ADD THIS
+  searchSubject = new Subject();  // ADD THIS
 
-  constructor(private http: HttpClient) { console.log('user service loaded'); }
+  constructor(private http: HttpClient, private router: Router) { console.log('user service loaded'); }
 
   registerUser(newUser): void {
     console.log(newUser);
@@ -26,6 +30,15 @@ export class UserService {
         localStorage.setItem('currentUser', `${user.email}`);
         localStorage.setItem('token', `${token}`);
         console.log(response, token);
+        this.currentUser = user.email;
+        this.searchSubject.next(this.currentUser);
+        this.router.navigate(['/categories']);
       }, err => console.log(err));
+  }
+  logoutUser(): void {
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('token');
+    this.currentUser = '';
+    this.router.navigate(['/login']);
   }
 }

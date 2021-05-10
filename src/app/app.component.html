@@ -1,16 +1,16 @@
 <nav>
   <div class="nav-wrapper">
-    <a class="brand-logo" routerLink="/login">Recipe Logo App</a>
+    <a class="brand-logo" routerLink="/login">Recipe App</a>
     <ul id="nav-mobile" class="right hide-on-med-and-down">
       <li><a routerLink="/categories">All Categories</a></li>
 
-      <span *ngIf="true">
+      <span *ngIf="!this.currentUser">
         <li><a routerLink="/signup">Sign Up</a></li>
         <li><a routerLink="/login">Log In</a></li>
       </span>
-      <span *ngIf="true">
-        <li><a routerLink="/logout">Log Out</a></li>
-        <li>Hello,</li>
+      <span *ngIf="this.currentUser">
+        <li><a routerLink="/logout">LOG OUT</a></li>
+        <li>Hello, {{currentUser}}</li>
       </span>
     </ul>
   </div>
